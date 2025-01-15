@@ -1,4 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Registro.Components;
+using Registro.DAL;
+using Registro.Models;
+using Registro.Services;
 
 namespace Registro
 {
@@ -11,6 +15,12 @@ namespace Registro
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
+
+            builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlServer(ConStr));
+
+            builder.Services.AddScoped<TecnicoService>();
 
             var app = builder.Build();
 
