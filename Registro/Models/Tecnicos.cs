@@ -8,7 +8,7 @@ namespace Registro.Models
 		public int TecnicoId { get; set; }
 
 		[Required(ErrorMessage = "Este Campo es Requerido.")]
-		[RegularExpression(@"^(a-zA-Z\s)+$",ErrorMessage = "Solo Caracteres Alfabeticos.")]
+		[RegularExpression(@"^[a-zA-Z\s]+$",ErrorMessage = "Solo Caracteres Alfabeticos.")]
 		public string Nombres { get; set; }
 
 		[Required(ErrorMessage = "Este Campo es Requerido.")]
