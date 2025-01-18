@@ -1,0 +1,50 @@
+﻿@page "/Tecnico/Crear"
+@inject TecnicoService tecnicosService
+@inject NavigationManager navigate
+@rendermode InteractiveServer
+
+<PageTitle>Create</PageTitle>
+<EditForm Model="tecnico" OnValidSubmit="Guardar">
+	<div class="container">
+		<div class="card shadow-lg">
+			@*header*@
+			<div class="card-header">
+				<div class="card-title">Crear T&eacutecnico</div>
+			</div>
+			@*body*@
+			<div class="card-body">
+				<div class="row">
+					<div class="col-3 ms-5">
+						@*Nombres*@
+						<label class="form-label"><strong>Nombres</strong></label>
+						<InputText class="form-control" @bind-Value="tecnico.Nombres"></InputText>
+						<ValidationMessage For="(()=> tecnico.Nombres)"/>
+					</div>
+					<div class="col-3 ms-5">
+						@*SueldoHora*@
+						<label class="form-label"><strong>Sueldo por hora</strong></label>
+						<InputNumber class="form-control" @bind-Value="tecnico.SueldoHora"></InputNumber>
+						<ValidationMessage For="(()=> tecnico.SueldoHora)" />
+					</div>
+				</div>
+			</div>
+			@*footer*@
+			<div class="card-footer text-center">
+				<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
+				<button type="submit" class="btn btn-outline-success">Guardar</button>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+
+@code {
+	public Tecnicos tecnico { get; set; } = new Tecnicos();
+
+	public async Task Guardar()
+	{
+		var guardar = tecnicosService.Guardar(tecnico);
+		navigate.NavigateTo("/Tecnico/Index");
+		return;
+	}
+}
