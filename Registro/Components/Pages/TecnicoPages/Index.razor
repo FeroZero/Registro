@@ -1,0 +1,54 @@
+﻿@page "/Tecnico/Index"
+@inject TecnicoService tecnicoService
+@rendermode InteractiveServer
+
+<PageTitle>Index</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*header*@
+		<div class="card-header">
+			<div class="card-title"><h5>Registro de Tecnicos</h5></div>
+		</div>
+		@*body*@
+		<div class="card-body">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nombres</th>
+						<th>Sueldo por Hora</th>
+						<th><div class="text-end"><a href="/Tecnico/Crear" class="text-end btn btn-outline-primary">Crear</a></div></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var tecnicos in Lista)
+					{
+						<tr>
+							<td>@tecnicos.TecnicoId</td>
+							<td>@tecnicos.Nombres</td>
+							<td>@tecnicos.SueldoHora</td>
+							<td><a href="/Tecnico/Editar/@tecnicos.TecnicoId" class="btn btn-outline-warning">Editar</a></td>
+							<td><a href="/Tecnico/Ver/@tecnicos.TecnicoId" class="btn btn-outline-secondary">Ver</a></td>
+							<td><a href="/Tecnico/Eliminar/@tecnicos.TecnicoId" class="btn btn-outline-danger">Eliminar</a></td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+@code {
+	public List<Tecnicos> Lista { get; set; } = new List<Tecnicos>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Lista = await tecnicoService.Listar(o => o.TecnicoId > 0);
+	}
+
+	public async Task Buscar()
+	{
+
+	}
+}
