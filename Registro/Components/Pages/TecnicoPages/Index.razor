@@ -64,7 +64,7 @@
 					<tr>
 						<td>@tecnicos.TecnicoId</td>
 						<td>@tecnicos.Nombres</td>
-						<td>@tecnicos.SueldoHora</td>
+						<td>$ @tecnicos.SueldoHora.ToString("N2")</td>
 						<td><a href="/Tecnico/Editar/@tecnicos.TecnicoId" class="btn btn-outline-warning">Editar</a></td>
 						<td><a href="/Tecnico/Ver/@tecnicos.TecnicoId" class="btn btn-outline-secondary">Ver</a></td>
 						<td><a href="/Tecnico/Eliminar/@tecnicos.TecnicoId" class="btn btn-outline-danger">Eliminar</a></td>

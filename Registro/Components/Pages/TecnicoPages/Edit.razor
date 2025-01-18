@@ -5,6 +5,7 @@
 
 <PageTitle>Editar</PageTitle>
 <EditForm Model="tecnico" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
 	<div class="container">
 		<div class="card shadow-lg">
 			@*header*@
@@ -52,6 +53,5 @@
 	{
 		var guardar = await tecnicosService.Guardar(tecnico);
 		navigate.NavigateTo("/Tecnico/Index");
-		return;
 	}
 }

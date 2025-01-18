@@ -5,6 +5,7 @@
 
 <PageTitle>Crear</PageTitle>
 <EditForm Model="tecnico" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator/>
 	<div class="container">
 		<div class="card shadow-lg">
 			@*header*@
@@ -17,7 +18,7 @@
 					<div class="col-3 ms-5">
 						@*Nombres*@
 						<label class="form-label"><strong>Nombres</strong></label>
-						<InputText class="form-control" @bind-Value="tecnico.Nombres"></InputText>
+						<InputText class="form-control" @bind-value="tecnico.Nombres"></InputText>
 						<ValidationMessage For="(()=> tecnico.Nombres)"/>
 					</div>
 					<div class="col-3 ms-5">
@@ -45,6 +46,5 @@
 	{
 		var guardar = await tecnicosService.Guardar(tecnico);
 		navigate.NavigateTo("/Tecnico/Index");
-		return;
 	}
 }
