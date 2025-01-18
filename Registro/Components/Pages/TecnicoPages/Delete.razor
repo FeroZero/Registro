@@ -10,6 +10,7 @@
 		<div class="card-header">
 			<div class="card-title"><h5>Estas Seguro que quieres eliminar este T&eacute;cnico?</h5></div>
 		</div>
+		@*body*@
 		<div class="card-body">
 			<ul>
 				<li><strong>Id: </strong><strong>@tecnicos.TecnicoId</strong></li>
@@ -17,7 +18,8 @@
 				<li><strong>Sueldo por hora: </strong><strong>@tecnicos.SueldoHora</strong></li>
 			</ul>
 		</div>
-		<div class="card-footer">
+		@*footer*@
+		<div class="card-footer text-cen">
 			<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
 			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
 		</div>
@@ -25,6 +27,7 @@
 </div>
 
 @code {
+	[Parameter]
 	public int TecnicoId { get; set; }
 	public Tecnicos tecnicos { get; set; } = new Tecnicos();
 

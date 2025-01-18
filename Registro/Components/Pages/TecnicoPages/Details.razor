@@ -17,13 +17,14 @@
 				<li><strong>Sueldo por hora: </strong><strong>@tecnicos.SueldoHora</strong></li>
 			</ul>
 		</div>
-		<div class="card-footer">
-			<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
-		</div>
+	</div>
+	<div class="card-footer text-center">
+		<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
 	</div>
 </div>
 
 @code {
+	[Parameter]
 	public int TecnicoId { get; set; }
 	public Tecnicos tecnicos { get; set; } = new Tecnicos();
 

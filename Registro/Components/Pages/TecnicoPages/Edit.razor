@@ -39,6 +39,7 @@
 
 
 @code {
+	[Parameter]
 	public int TecnicoId { get; set; }
 	public Tecnicos tecnico { get; set; } = new Tecnicos();
 
@@ -49,7 +50,7 @@
 
 	public async Task Guardar()
 	{
-		var guardar = tecnicosService.Guardar(tecnico);
+		var guardar = await tecnicosService.Guardar(tecnico);
 		navigate.NavigateTo("/Tecnico/Index");
 		return;
 	}
