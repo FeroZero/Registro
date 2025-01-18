@@ -1,5 +1,5 @@
 ﻿@page "/Tecnico/Index"
-@inject TecnicoService tecnicoService
+@inject TecnicoService tecnicosService
 @rendermode InteractiveServer
 
 <PageTitle>Index</PageTitle>
@@ -11,44 +11,98 @@
 		</div>
 		@*body*@
 		<div class="card-body">
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Nombres</th>
-						<th>Sueldo por Hora</th>
-						<th><div class="text-end"><a href="/Tecnico/Crear" class="text-end btn btn-outline-primary">Crear</a></div></th>
-					</tr>
-				</thead>
-
-				<tbody>
-					@foreach (var tecnicos in Lista)
-					{
-						<tr>
-							<td>@tecnicos.TecnicoId</td>
-							<td>@tecnicos.Nombres</td>
-							<td>@tecnicos.SueldoHora</td>
-							<td><a href="/Tecnico/Editar/@tecnicos.TecnicoId" class="btn btn-outline-warning">Editar</a></td>
-							<td><a href="/Tecnico/Ver/@tecnicos.TecnicoId" class="btn btn-outline-secondary">Ver</a></td>
-							<td><a href="/Tecnico/Eliminar/@tecnicos.TecnicoId" class="btn btn-outline-danger">Eliminar</a></td>
-						</tr>
-					}
-				</tbody>
-			</table>
+			<div class="row">
+				@*Filtrar por*@
+				<div class="col-3">
+					<label class="form-label"><strong>Filtrar Por</strong></label>
+				</div>
+				@*ValorFiltro*@
+				<div class="col-4">
+					<label class="form-label"><strong>Busqueda</strong></label>
+				</div>
+			</div>
+			@*Inputs y Botones*@
+			<div class="row">
+				@*Filtro*@
+				<div class="col-3">
+					<InputSelect class="form-select" @bind-Value="Filtro">
+						<option value="" selected disabled>Elija una opci&oacute;n</option>
+						<option value="Id">Id</option>
+						<option value="Nombre">Nombre</option>
+						<option value="SueldoHora">SueldoHora</option>
+					</InputSelect>
+				</div>
+				@*Buscar*@
+				<div class="col-4">
+					<div class="input-group">
+						<input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+						<button type="button" class="btn btn-outline-primary" @onclick="Buscar">Buscar</button>
+					</div>
+				</div>
+				@*Restablecer*@
+				<div class="col-auto">
+					<button type="button" class="btn btn-outline-secondary" @onclick="Restablecer">Nuevo</button>
+				</div>
+				@*Crear*@
+				<div class="col text-end">
+					<a href="/Tecnico/Crear" class="text-end btn btn-outline-primary">Crear</a>
+				</div>
+			</div>
 		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nombres</th>
+					<th>Sueldo por Hora</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var tecnicos in ListaTecnicos)
+				{
+					<tr>
+						<td>@tecnicos.TecnicoId</td>
+						<td>@tecnicos.Nombres</td>
+						<td>@tecnicos.SueldoHora</td>
+						<td><a href="/Tecnico/Editar/@tecnicos.TecnicoId" class="btn btn-outline-warning">Editar</a></td>
+						<td><a href="/Tecnico/Ver/@tecnicos.TecnicoId" class="btn btn-outline-secondary">Ver</a></td>
+						<td><a href="/Tecnico/Eliminar/@tecnicos.TecnicoId" class="btn btn-outline-danger">Eliminar</a></td>
+					</tr>
+				}
+			</tbody>
+		</table>
 	</div>
 </div>
 
 @code {
-	public List<Tecnicos> Lista { get; set; } = new List<Tecnicos>();
+	public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
+	public string Filtro { get; set; } = string.Empty;
+	public string ValorFiltro { get; set; } = string.Empty;
 
 	protected override async Task OnInitializedAsync()
 	{
-		Lista = await tecnicoService.Listar(o => o.TecnicoId > 0);
+		ListaTecnicos = await tecnicosService.Listar(o => o.TecnicoId > 0);
 	}
 
-	public async Task Buscar()
+	private async Task Buscar()
 	{
+		if (ValorFiltro.Trim() != "")
+		{
+			if (Filtro == "Id" && int.TryParse(ValorFiltro, out int tecnicoId))
+				ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId == tecnicoId);
+			else if (Filtro == "Nombre")
+				ListaTecnicos = await tecnicosService.Listar(t => t.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
 
+		}
+		else
+			ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId > 0);
+	}
+
+	private async Task Restablecer()
+	{
+		ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId > 0);
+		Filtro = string.Empty;
+		ValorFiltro = string.Empty;
 	}
 }
