@@ -43,7 +43,7 @@
 
 	public async Task Guardar()
 	{
-		var guardar = tecnicosService.Guardar(tecnico);
+		var guardar = await tecnicosService.Guardar(tecnico);
 		navigate.NavigateTo("/Tecnico/Index");
 		return;
 	}
