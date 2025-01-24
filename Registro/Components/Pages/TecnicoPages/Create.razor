@@ -29,6 +29,9 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-3 ms-5">
+				<h6>@Alerta</h6>
+			</div>
 			@*footer*@
 			<div class="card-footer text-center">
 				<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
@@ -41,10 +44,22 @@
 
 @code {
 	public Tecnicos tecnico { get; set; } = new Tecnicos();
+	public string Alerta { get; set; }
 
 	public async Task Guardar()
 	{
+		if(await Existe())
+		{
+			Alerta = "Ya existe un usuario con este nombre.";
+			return;
+		}
 		var guardar = await tecnicosService.Guardar(tecnico);
 		navigate.NavigateTo("/Tecnico/Index");
+	}
+
+	public async Task<bool> Existe()
+	{
+		var existe = await tecnicosService.ExisteTecnico(tecnico.Nombres, tecnico.TecnicoId);
+		return existe;
 	}
 }
