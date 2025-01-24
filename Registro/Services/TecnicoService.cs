@@ -59,5 +59,12 @@ namespace Registro.Services
 				.ToListAsync();
 		}
 
+		public async Task<bool> ExisteTecnico(string nombre, int id)
+		{
+			await using var contexto = await DbFactory.CreateDbContextAsync();
+			return await contexto.Tecnicos
+				.AnyAsync(t => t.Nombres.ToLower().Equals(nombre.ToLower()) && t.TecnicoId != id);
+		}
+
 	}
 }
