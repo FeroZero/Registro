@@ -55,15 +55,16 @@ public class ClienteService(IDbContextFactory<Contexto> DbFactory)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		return await contexto.Clientes
+			.Include(t => t.Tecnicos)
 			.Where(criterio)
 			.ToListAsync();
 	}
 
-	public async Task<bool> ExisteCliente(string nombre, int id)
+	public async Task<bool> ExisteCliente(string nombre, int id, string rnc)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		return await contexto.Clientes
-			.AnyAsync(t => t.Nombres.ToLower().Equals(nombre.ToLower()) && t.ClienteId != id);
+			.AnyAsync(t => t.Nombres.ToLower().Equals(nombre.ToLower()) && t.ClienteId != id || t.Rnc.Equals(rnc) && t.ClienteId != id);
 	}
 
 }
