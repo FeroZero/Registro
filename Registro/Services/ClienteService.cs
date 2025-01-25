@@ -33,14 +33,14 @@ public class ClienteService(IDbContextFactory<Contexto> DbFactory)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		return await contexto.Clientes
-			.AnyAsync(p => p.TecnicoId == id);
+			.AnyAsync(p => p.ClienteId == id);
 	}
 
 	public async Task<bool> Eliminar(int id)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		return await contexto.Clientes
-			.Where(p => p.TecnicoId == id)
+			.Where(p => p.ClienteId == id)
 			.ExecuteDeleteAsync() > 0;
 	}
 
@@ -48,7 +48,7 @@ public class ClienteService(IDbContextFactory<Contexto> DbFactory)
 	{
 		await using var contexo = await DbFactory.CreateDbContextAsync();
 		return await contexo.Clientes
-			.FirstOrDefaultAsync(p => p.TecnicoId == id);
+			.FirstOrDefaultAsync(p => p.ClienteId == id);
 	}
 
 	public async Task<List<Clientes>> Listar(Expression<Func<Clientes, bool>> criterio)
