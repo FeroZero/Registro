@@ -29,7 +29,7 @@ namespace Registro.Models
 		[Range(1, double.MaxValue, ErrorMessage = "Solo Caracteres Numericos.")]
 		public double LimiteCredito { get; set; }
 
-		[ForeignKey("TecnicoId")]
+		[ForeignKey("Tecnicos")]
 		public int TecnicoId { get; set; }
 		public Tecnicos? Tecnicos { get; set; }
 	}
