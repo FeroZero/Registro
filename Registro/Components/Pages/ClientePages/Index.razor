@@ -1,0 +1,115 @@
+﻿@page "/Cliente/Index"
+@inject ClienteService clienteService
+@rendermode InteractiveServer
+
+<PageTitle>Cliente Index</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*header*@
+		<div class="card-header">
+			<div class="card-title"><h5>Registro de Clientes</h5></div>
+		</div>
+		@*body*@
+		<div class="card-body">
+			<div class="row">
+				@*Filtrar por*@
+				<div class="col-3">
+					<label class="form-label"><strong>Filtrar Por</strong></label>
+				</div>
+				@*ValorFiltro*@
+				<div class="col-4">
+					<label class="form-label"><strong>Busqueda</strong></label>
+				</div>
+			</div>
+			@*Inputs y Botones*@
+			<div class="row">
+				@*Filtro*@
+				<div class="col-3">
+					<InputSelect class="form-select" @bind-Value="Filtro">
+						<option value="" selected disabled>Elija una opci&oacute;n</option>
+						<option value="Id">Id</option>
+						<option value="Nombre">Nombre</option>
+						<option value="SueldoHora">SueldoHora</option>
+					</InputSelect>
+				</div>
+				@*Buscar*@
+				<div class="col-4">
+					<div class="input-group">
+						<input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+						<button type="button" class="btn btn-outline-primary" @onclick="Buscar">Buscar</button>
+					</div>
+				</div>
+				@*Restablecer*@
+				<div class="col-auto">
+					<button type="button" class="btn btn-outline-secondary" @onclick="Restablecer">Nuevo</button>
+				</div>
+				@*Crear*@
+				<div class="col text-end">
+					<a href="/Tecnico/Crear" class="text-end btn btn-outline-primary">Crear</a>
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Rnc</th>
+					<th>Nombres</th>
+					<th>Direccion</th>
+					<th>Limite de Credito</th>
+					<th>Tecnico encargado</th>
+					<th>Fecha de Ingreso</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var clientes in ListaClientes)
+				{
+					<tr>
+						<td>@clientes.TecnicoId</td>
+						<td>@clientes.Rnc</td>
+						<td>@clientes.Nombres</td>
+						<td>@clientes.Direccion</td>
+						<td>$ @clientes.LimiteCredito.ToString("N2")</td>
+						<td>@clientes.Tecnicos.Nombres</td>
+						<td>@clientes.FechaIngreso</td>
+						<td><a href="/Cliente/Editar/@clientes.ClienteId" class="btn btn-outline-warning">Editar</a></td>
+						<td><a href="/Cliente/Eliminar/@clientes.ClienteId" class="btn btn-outline-danger">Eliminar</a></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+@code {
+	public List<Clientes> ListaClientes { get; set; } = new List<Clientes>();
+	public string Filtro { get; set; } = string.Empty;
+	public string ValorFiltro { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		ListaClientes = await clienteService.Listar(o => o.ClienteId > 0);
+	}
+
+	private async Task Buscar()
+	{
+		if (ValorFiltro.Trim() != "")
+		{
+			if (Filtro == "Id" && int.TryParse(ValorFiltro, out int tecnicoId))
+				ListaClientes = await clienteService.Listar(t => t.ClienteId == tecnicoId);
+			else if (Filtro == "Nombre")
+				ListaClientes = await clienteService.Listar(t => t.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+
+		}
+		else
+			ListaClientes = await clienteService.Listar(t => t.ClienteId > 0);
+	}
+
+	private async Task Restablecer()
+	{
+		ListaClientes = await clienteService.Listar(t => t.ClienteId > 0);
+		Filtro = string.Empty;
+		ValorFiltro = string.Empty;
+	}
+}
