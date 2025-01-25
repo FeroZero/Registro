@@ -12,7 +12,7 @@ using Registro.DAL;
 namespace Registro.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20250125121250_Secondary")]
+    [Migration("20250125204822_Secondary")]
     partial class Secondary
     {
         /// <inheritdoc />
