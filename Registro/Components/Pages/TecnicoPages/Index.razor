@@ -36,16 +36,16 @@
 				<div class="col-4">
 					<div class="input-group">
 						<input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
-						<button type="button" class="btn btn-outline-primary" @onclick="Buscar">Buscar</button>
+						<button type="button" class="bi bi-search btn btn-outline-primary" @onclick="Buscar">Buscar</button>
 					</div>
 				</div>
 				@*Restablecer*@
 				<div class="col-auto">
-					<button type="button" class="btn btn-outline-secondary" @onclick="Restablecer">Nuevo</button>
+					<button type="button" class="bi bi-arrow-counterclockwise btn btn-outline-secondary" @onclick="Restablecer">Nuevo</button>
 				</div>
 				@*Crear*@
 				<div class="col text-end">
-					<a href="/Tecnico/Crear" class="text-end btn btn-outline-primary">Crear</a>
+					<a href="/Tecnico/Crear" class="bi bi-plus-square btn btn-outline-primary">Crear</a>
 				</div>
 			</div>
 		</div>
@@ -65,9 +65,8 @@
 						<td>@tecnicos.TecnicoId</td>
 						<td>@tecnicos.Nombres</td>
 						<td>$ @tecnicos.SueldoHora.ToString("N2")</td>
-						<td><a href="/Tecnico/Editar/@tecnicos.TecnicoId" class="btn btn-outline-warning">Editar</a></td>
-						<td><a href="/Tecnico/Ver/@tecnicos.TecnicoId" class="btn btn-outline-secondary">Ver</a></td>
-						<td><a href="/Tecnico/Eliminar/@tecnicos.TecnicoId" class="btn btn-outline-danger">Eliminar</a></td>
+						<td><a href="/Tecnico/Editar/@tecnicos.TecnicoId" class="bi bi-pencil-square btn btn-outline-warning"></a></td>
+						<td><a href="/Tecnico/Eliminar/@tecnicos.TecnicoId" class="bi bi-trash btn btn-outline-danger"></a></td>
 					</tr>
 				}
 			</tbody>
