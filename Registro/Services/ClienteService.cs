@@ -59,7 +59,7 @@ public class ClienteService(IDbContextFactory<Contexto> DbFactory)
 			.ToListAsync();
 	}
 
-	public async Task<bool> ExisteTecnico(string nombre, int id)
+	public async Task<bool> ExisteCliente(string nombre, int id)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		return await contexto.Clientes
