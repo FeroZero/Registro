@@ -36,23 +36,23 @@ namespace Registro.Migrations
                     Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rnc = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     LimiteCredito = table.Column<double>(type: "float", nullable: false),
-                    TecnicoId = table.Column<int>(type: "int", nullable: false),
-                    TecnicosTecnicoId = table.Column<int>(type: "int", nullable: true)
+                    TecnicoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clientes", x => x.ClienteId);
                     table.ForeignKey(
-                        name: "FK_Clientes_Tecnicos_TecnicosTecnicoId",
-                        column: x => x.TecnicosTecnicoId,
+                        name: "FK_Clientes_Tecnicos_TecnicoId",
+                        column: x => x.TecnicoId,
                         principalTable: "Tecnicos",
-                        principalColumn: "TecnicoId");
+                        principalColumn: "TecnicoId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clientes_TecnicosTecnicoId",
+                name: "IX_Clientes_TecnicoId",
                 table: "Clientes",
-                column: "TecnicosTecnicoId");
+                column: "TecnicoId");
         }
 
         /// <inheritdoc />
