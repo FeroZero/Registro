@@ -12,8 +12,9 @@ namespace Registro
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddRazorComponents()
+			// Add services to the container.
+			builder.Services.AddBlazorBootstrap();
+			builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
             var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
