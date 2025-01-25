@@ -1,0 +1,39 @@
+﻿@page "/Cliente/Eliminar/{ClienteId:int}"
+@inject ClienteService clienteService
+@inject TecnicoService tecnicoService
+@inject NavigationManager navigate
+@rendermode InteractiveServer
+
+<PageTitle>Eliminar</PageTitle>
+<div class="container">
+	<div class="shadow-lg">
+		@*header*@
+		<div class="card-header">
+			<div class="card-title"><h5>Estas Seguro que quieres eliminar el Cliente @clientes.Nombres?</h5></div>
+		</div>
+		@*body*@
+		<div class="card-body">
+			<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
+			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int ClienteId { get; set; }
+	public Tecnicos tecnicos { get; set; } = new Tecnicos();
+	public Clientes clientes { get; set; } = new Clientes();
+
+	public async Task Eliminar()
+	{
+		var eliminar = await clienteService.Eliminar(ClienteId);
+		navigate.NavigateTo("/Tecnico/Index");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		clientes = await clienteService.Buscar(ClienteId);
+		tecnicos = await tecnicoService.Buscar(tecnicos.TecnicoId);
+	}
+}
