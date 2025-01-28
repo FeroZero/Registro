@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Registro.Migrations
 {
     /// <inheritdoc />
-    public partial class Practica : Migration
+    public partial class Tercera : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

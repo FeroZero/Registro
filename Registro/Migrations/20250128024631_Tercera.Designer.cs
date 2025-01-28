@@ -12,8 +12,8 @@ using Registro.DAL;
 namespace Registro.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20250127230740_Practica")]
-    partial class Practica
+    [Migration("20250128024631_Tercera")]
+    partial class Tercera
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
