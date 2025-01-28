@@ -25,6 +25,8 @@ namespace Registro
 
             builder.Services.AddScoped<ClienteService>();
 
+            builder.Services.AddScoped<CiudadService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
