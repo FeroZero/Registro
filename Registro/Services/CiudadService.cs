@@ -51,7 +51,7 @@ namespace Registro.Services
 				.FirstOrDefaultAsync(p => p.CiudadId == id);
 		}
 
-		public async Task<List<Ciudades>> Listar(Expression<Func<Clientes, bool>> criterio)
+		public async Task<List<Ciudades>> Listar(Expression<Func<Ciudades, bool>> criterio)
 		{
 			await using var contexto = await DbFactory.CreateDbContextAsync();
 			return await contexto.Ciudades
@@ -59,7 +59,7 @@ namespace Registro.Services
 				.ToListAsync();
 		}
 
-		public async Task<bool> ExisteCiudad(string nombre, int id, string rnc)
+		public async Task<bool> ExisteCiudad(string nombre, int id)
 		{
 			await using var contexto = await DbFactory.CreateDbContextAsync();
 			return await contexto.Ciudades
