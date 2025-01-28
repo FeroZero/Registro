@@ -66,5 +66,4 @@ public class ClienteService(IDbContextFactory<Contexto> DbFactory)
 		return await contexto.Clientes
 			.AnyAsync(t => t.Nombres.ToLower().Equals(nombre.ToLower()) && t.ClienteId != id || t.Rnc.Equals(rnc) && t.ClienteId != id);
 	}
-
 }
