@@ -1,6 +1,7 @@
 ﻿@page "/Cliente/Editar/{ClienteId:int}"
 @inject ClienteService clienteService
 @inject TecnicoService tecnicosService
+@inject CiudadService ciudadService
 @inject NavigationManager navigate
 @rendermode InteractiveServer
 
@@ -21,6 +22,19 @@
 						<label class="form-label"><strong>Nombres</strong></label>
 						<InputText class="form-control" @bind-value="cliente.Nombres"></InputText>
 						<ValidationMessage For="(()=> cliente.Nombres)" />
+					</div>
+
+					<div class="col-3" ms-5>
+						@*Ciudad*@
+						<label class="form-label"><Strong>Ciudad</Strong></label>
+						<InputSelect class="form-select" @bind-Value="cliente.CiudadId">
+							<option value="0">Seleccion una ciudad</option>
+							@foreach(var ciudad in ListaCiudades)
+							{
+								<option value="@ciudad.CiudadId">@ciudad.Nombre</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="(()=> cliente.CiudadId)"></ValidationMessage>
 					</div>
 
 					<div class="col-3 ms-5">
@@ -54,7 +68,7 @@
 					<div class="col-3 ms-5">
 						<label class="form-label text-naranja"><strong>Tipo</strong></label>
 						<InputSelect class="form-select" @bind-Value="cliente.TecnicoId">
-							<option value="0">Seleccione un Tipo.</option>
+							<option value="0">Seleccione un Tecnico.</option>
 							@foreach (var tecnicos in ListaTecnicos)
 							{
 								<option value="@tecnicos.TecnicoId">@tecnicos.Nombres</option>
@@ -81,6 +95,7 @@
 	[Parameter]
 	public int ClienteId { get; set; }
 	public Clientes cliente { get; set; } = new Clientes();
+	public List<Ciudades> ListaCiudades { get; set; } = new List<Ciudades>();
 	public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
 	public string Alerta { get; set; }
 
@@ -88,6 +103,7 @@
 	{
 		cliente = await clienteService.Buscar(ClienteId);
 		ListaTecnicos = await tecnicosService.Listar(o => o.TecnicoId > 0);
+		ListaCiudades = await ciudadService.Listar(o => o.CiudadId > 0);
 	}
 
 	public async Task Guardar()

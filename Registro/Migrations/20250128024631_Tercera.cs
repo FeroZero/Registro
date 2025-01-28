@@ -6,11 +6,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Registro.Migrations
 {
     /// <inheritdoc />
-    public partial class Secondary : Migration
+    public partial class Tercera : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Ciudades",
+                columns: table => new
+                {
+                    CiudadId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ciudades", x => x.CiudadId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Tecnicos",
                 columns: table => new
@@ -36,11 +49,18 @@ namespace Registro.Migrations
                     Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rnc = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     LimiteCredito = table.Column<double>(type: "float", nullable: false),
-                    TecnicoId = table.Column<int>(type: "int", nullable: false)
+                    TecnicoId = table.Column<int>(type: "int", nullable: false),
+                    CiudadId = table.Column<int>(type: "int", nullable: false),
+                    CiudadesCiudadId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clientes", x => x.ClienteId);
+                    table.ForeignKey(
+                        name: "FK_Clientes_Ciudades_CiudadesCiudadId",
+                        column: x => x.CiudadesCiudadId,
+                        principalTable: "Ciudades",
+                        principalColumn: "CiudadId");
                     table.ForeignKey(
                         name: "FK_Clientes_Tecnicos_TecnicoId",
                         column: x => x.TecnicoId,
@@ -48,6 +68,11 @@ namespace Registro.Migrations
                         principalColumn: "TecnicoId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_CiudadesCiudadId",
+                table: "Clientes",
+                column: "CiudadesCiudadId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_TecnicoId",
@@ -60,6 +85,9 @@ namespace Registro.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Clientes");
+
+            migrationBuilder.DropTable(
+                name: "Ciudades");
 
             migrationBuilder.DropTable(
                 name: "Tecnicos");
