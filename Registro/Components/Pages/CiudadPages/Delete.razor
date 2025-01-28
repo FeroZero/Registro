@@ -1,0 +1,36 @@
+﻿@page "/Ciudad/Eliminar/{CiudadId:int}"
+@inject CiudadService ciudadService
+@inject NavigationManager navigate
+@rendermode InteractiveServer
+
+<PageTitle>Eliminar</PageTitle>
+<div class="container">
+	<div class="shadow-lg">
+		@*header*@
+		<div class="card-header">
+			<div class="card-title"><h5>Estas Seguro que quieres eliminar la ciudad @ciudades.Nombre?</h5></div>
+		</div>
+		@*body*@
+		<div class="card-body">
+			<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
+			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int CiudadId { get; set; }
+	public Ciudades ciudades { get; set; } = new Ciudades();
+
+	public async Task Eliminar()
+	{
+		var eliminar = await ciudadService.Eliminar(CiudadId);
+		navigate.NavigateTo("/Ciudad/Index");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		ciudades = await ciudadService.Buscar(CiudadId);
+	}
+}
