@@ -14,5 +14,14 @@ namespace Registro.DAL
 		public DbSet<Ciudades> Ciudades { get; set; }
 
 		public DbSet<Tickets> Tickets { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Tickets>()
+				.HasOne(t => t.Tecnicos)
+				.WithMany()
+				.HasForeignKey(t => t.TecnicoId)
+				.OnDelete(DeleteBehavior.NoAction);
+		}
 	}
 }
