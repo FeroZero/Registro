@@ -54,6 +54,7 @@
 					<th>Id</th>
 					<th>Rnc</th>
 					<th>Nombres</th>
+					<th>Ciudad</th>
 					<th>Direccion</th>
 					<th>Limite de Credito</th>
 					<th>Tecnico encargado</th>
@@ -68,6 +69,7 @@
 						<td>@clientes.TecnicoId</td>
 						<td>@clientes.Rnc</td>
 						<td>@clientes.Nombres</td>
+						<td>@clientes.Ciudades.Nombre</td>
 						<td>@clientes.Direccion</td>
 						<td>$ @clientes.LimiteCredito.ToString("N2")</td>
 						<td>@clientes.Tecnicos.Nombres</td>
