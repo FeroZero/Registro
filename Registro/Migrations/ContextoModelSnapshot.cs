@@ -104,6 +104,45 @@ namespace Registro.Migrations
                     b.ToTable("Tecnicos");
                 });
 
+            modelBuilder.Entity("Registro.Models.Tickets", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
+
+                    b.Property<string>("Asunto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.PrimitiveCollection<string>("Prioridad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TecnicoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TecnicosTecnicoId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TiempoInvertido")
+                        .HasColumnType("time");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("TecnicosTecnicoId");
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("Registro.Models.Clientes", b =>
                 {
                     b.HasOne("Registro.Models.Ciudades", "Ciudades")
@@ -117,6 +156,17 @@ namespace Registro.Migrations
                         .IsRequired();
 
                     b.Navigation("Ciudades");
+
+                    b.Navigation("Tecnicos");
+                });
+
+            modelBuilder.Entity("Registro.Models.Tickets", b =>
+                {
+                    b.HasOne("Registro.Models.Tecnicos", "Tecnicos")
+                        .WithMany()
+                        .HasForeignKey("TecnicosTecnicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Tecnicos");
                 });

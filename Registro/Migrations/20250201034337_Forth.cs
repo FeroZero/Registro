@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Registro.Migrations
 {
     /// <inheritdoc />
-    public partial class Tercera : Migration
+    public partial class Forth : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -69,6 +69,31 @@ namespace Registro.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    TicketId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Prioridad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Asunto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TiempoInvertido = table.Column<TimeSpan>(type: "time", nullable: false),
+                    TecnicoId = table.Column<int>(type: "int", nullable: false),
+                    TecnicosTecnicoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.TicketId);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Tecnicos_TecnicosTecnicoId",
+                        column: x => x.TecnicosTecnicoId,
+                        principalTable: "Tecnicos",
+                        principalColumn: "TecnicoId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_CiudadesCiudadId",
                 table: "Clientes",
@@ -78,6 +103,11 @@ namespace Registro.Migrations
                 name: "IX_Clientes_TecnicoId",
                 table: "Clientes",
                 column: "TecnicoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_TecnicosTecnicoId",
+                table: "Tickets",
+                column: "TecnicosTecnicoId");
         }
 
         /// <inheritdoc />
@@ -85,6 +115,9 @@ namespace Registro.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Clientes");
+
+            migrationBuilder.DropTable(
+                name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "Ciudades");
