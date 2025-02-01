@@ -33,10 +33,8 @@ namespace Registro.Models
 		public int TecnicoId { get; set; }
 		public Tecnicos? Tecnicos { get; set; }
 
-		[ForeignKey("CiudadesId")]
-
+		[ForeignKey("Ciudades")]
 		public int CiudadId { get; set; }
-
 		public Ciudades? Ciudades { get; set; }
 	}
 }
