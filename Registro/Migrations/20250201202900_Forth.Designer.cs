@@ -12,7 +12,7 @@ using Registro.DAL;
 namespace Registro.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20250201034337_Forth")]
+    [Migration("20250201202900_Forth")]
     partial class Forth
     {
         /// <inheritdoc />
@@ -53,9 +53,6 @@ namespace Registro.Migrations
                     b.Property<int>("CiudadId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CiudadesCiudadId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Direccion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -80,7 +77,7 @@ namespace Registro.Migrations
 
                     b.HasKey("ClienteId");
 
-                    b.HasIndex("CiudadesCiudadId");
+                    b.HasIndex("CiudadId");
 
                     b.HasIndex("TecnicoId");
 
@@ -119,6 +116,9 @@ namespace Registro.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -126,22 +126,22 @@ namespace Registro.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.PrimitiveCollection<string>("Prioridad")
+                    b.Property<string>("Prioridad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TecnicoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TecnicosTecnicoId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("TiempoInvertido")
-                        .HasColumnType("time");
+                    b.Property<string>("TiempoInvertido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TicketId");
 
-                    b.HasIndex("TecnicosTecnicoId");
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("TecnicoId");
 
                     b.ToTable("Tickets");
                 });
@@ -150,7 +150,9 @@ namespace Registro.Migrations
                 {
                     b.HasOne("Registro.Models.Ciudades", "Ciudades")
                         .WithMany()
-                        .HasForeignKey("CiudadesCiudadId");
+                        .HasForeignKey("CiudadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Registro.Models.Tecnicos", "Tecnicos")
                         .WithMany()
@@ -165,11 +167,19 @@ namespace Registro.Migrations
 
             modelBuilder.Entity("Registro.Models.Tickets", b =>
                 {
-                    b.HasOne("Registro.Models.Tecnicos", "Tecnicos")
+                    b.HasOne("Registro.Models.Clientes", "Clientes")
                         .WithMany()
-                        .HasForeignKey("TecnicosTecnicoId")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Registro.Models.Tecnicos", "Tecnicos")
+                        .WithMany()
+                        .HasForeignKey("TecnicoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Clientes");
 
                     b.Navigation("Tecnicos");
                 });

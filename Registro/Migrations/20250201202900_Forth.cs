@@ -50,17 +50,17 @@ namespace Registro.Migrations
                     Rnc = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     LimiteCredito = table.Column<double>(type: "float", nullable: false),
                     TecnicoId = table.Column<int>(type: "int", nullable: false),
-                    CiudadId = table.Column<int>(type: "int", nullable: false),
-                    CiudadesCiudadId = table.Column<int>(type: "int", nullable: true)
+                    CiudadId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clientes", x => x.ClienteId);
                     table.ForeignKey(
-                        name: "FK_Clientes_Ciudades_CiudadesCiudadId",
-                        column: x => x.CiudadesCiudadId,
+                        name: "FK_Clientes_Ciudades_CiudadId",
+                        column: x => x.CiudadId,
                         principalTable: "Ciudades",
-                        principalColumn: "CiudadId");
+                        principalColumn: "CiudadId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Clientes_Tecnicos_TecnicoId",
                         column: x => x.TecnicoId,
@@ -79,25 +79,30 @@ namespace Registro.Migrations
                     Prioridad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Asunto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TiempoInvertido = table.Column<TimeSpan>(type: "time", nullable: false),
+                    TiempoInvertido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TecnicoId = table.Column<int>(type: "int", nullable: false),
-                    TecnicosTecnicoId = table.Column<int>(type: "int", nullable: false)
+                    ClienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.TicketId);
                     table.ForeignKey(
-                        name: "FK_Tickets_Tecnicos_TecnicosTecnicoId",
-                        column: x => x.TecnicosTecnicoId,
-                        principalTable: "Tecnicos",
-                        principalColumn: "TecnicoId",
+                        name: "FK_Tickets_Clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Clientes",
+                        principalColumn: "ClienteId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Tecnicos_TecnicoId",
+                        column: x => x.TecnicoId,
+                        principalTable: "Tecnicos",
+                        principalColumn: "TecnicoId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clientes_CiudadesCiudadId",
+                name: "IX_Clientes_CiudadId",
                 table: "Clientes",
-                column: "CiudadesCiudadId");
+                column: "CiudadId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_TecnicoId",
@@ -105,19 +110,24 @@ namespace Registro.Migrations
                 column: "TecnicoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_TecnicosTecnicoId",
+                name: "IX_Tickets_ClienteId",
                 table: "Tickets",
-                column: "TecnicosTecnicoId");
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_TecnicoId",
+                table: "Tickets",
+                column: "TecnicoId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "Clientes");
 
             migrationBuilder.DropTable(
                 name: "Ciudades");
