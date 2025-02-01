@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Registro.Services;
 
-public class ClienteService(IDbContextFactory<Contexto> DbFactory)
+public class ClientesService(IDbContextFactory<Contexto> DbFactory)
 {
 	public async Task<bool> Guardar(Clientes cliente)
 	{
