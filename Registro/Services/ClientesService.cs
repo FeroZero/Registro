@@ -56,6 +56,7 @@ public class ClientesService(IDbContextFactory<Contexto> DbFactory)
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		return await contexto.Clientes
 			.Include(t => t.Tecnicos)
+			.Include(c => c.Ciudades)
 			.Where(criterio)
 			.ToListAsync();
 	}
