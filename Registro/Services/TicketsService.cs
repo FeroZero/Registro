@@ -51,11 +51,12 @@ namespace Registro.Services
 				.FirstOrDefaultAsync(t => t.TicketId == ticketId);
 		}
 		
-		public async Task<List<Tickets>> Listar(Expression<Func<Tickets,bool>> criterio)
+		public async Task<List<Tickets>> Listar(Expression<Func<Tickets, bool>> criterio)
 		{
 			await using var contexto = await DbFactory.CreateDbContextAsync();
 			return await contexto.Tickets
 				.Include(t => t.Tecnicos)
+				.Include(c => c.Clientes)
 				.Where(criterio)
 				.ToListAsync();
 		}
