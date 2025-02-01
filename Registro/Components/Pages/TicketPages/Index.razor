@@ -1,0 +1,57 @@
+﻿@page "/Ticket/Index"
+@inject TicketsService ticketsService
+@rendermode InteractiveServer
+
+
+<PageTitle>Tickets Index</PageTitle>
+<div class="container">
+	<div class="card-header">
+		@*header*@
+		<div class="card-title"><h5>Registro de Tickets</h5></div>
+	</div>
+	<div class="card-body">
+		@*body*@
+		<div class="col text-end">
+			<a href="/Ticket/Crear" class="btn btn-outline-primary bi bi-plus-square">Crear</a>
+		</div>
+		<table class="table table-borderer">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Fecha</th>
+					<th>Cliente</th>
+					<th>Prioridad</th>
+					<th>Asunto</th>
+					<th>Descripcion</th>
+					<th>Tiempo Invertido</th>
+					<th>Tecnico</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var tickets in Listatickets)
+				{
+					<tr>
+						<td>@tickets.TicketId</td>
+						<td>@tickets.Fecha</td>
+						<td value="@tickets.ClienteId">@tickets.Clientes.Nombres</td>
+						<td>@tickets.Prioridad</td>
+						<td>@tickets.Asunto</td>
+						<td>@tickets.Descripcion</td>
+						<td>@tickets.TiempoInvertido Horas</td>
+						<td value="@tickets.TecnicoId">@tickets.Tecnicos.Nombres</td>
+						<td><a href="/Ticket/Editar/@tickets.TicketId" class="bi bi-pencil-square btn btn-outline-warning"></a></td>
+						<td><a href="/Ticket/Eliminar/@tickets.TicketId" class="bi bi-trash btn btn-outline-danger"></a></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+@code {
+	public List<Tickets> Listatickets { get; set; } = new List<Tickets>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Listatickets = await ticketsService.Listar(o => o.TicketId > 0);
+	}
+}
