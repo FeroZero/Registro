@@ -1,0 +1,101 @@
+﻿@page "/Ticket/Crear"
+@inject TicketsService ticketsService
+@inject ClientesService clientesService
+@inject TecnicosService tecnicosService
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<PageTitle>Ticket Crear</PageTitle>
+<EditForm Model="tickets" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator/>
+	<div class="container">
+		@*header*@
+		<div class="card-header">
+			<div class="card-title"><h5>Crear Tickets</h5></div>
+		</div>
+		@*body*@
+		<div class="card-body">
+			<div class="row">
+				@* Asunto *@
+				<div class="col-3 ms-5">
+					<label class="form-label"><strong>Asunto</strong></label>
+					<InputText class="form-control" @bind-Value="tickets.Asunto"></InputText>
+					<ValidationMessage For="(()=> tickets.Asunto)"/>
+				</div>
+				@* Descripcion *@
+				<div class="col-3 ms-5">
+					<label class="form-label"><strong>Descripcion</strong></label>
+					<InputText class="form-control" @bind-Value="tickets.Descripcion"></InputText>
+					<ValidationMessage For="(()=> tickets.Descripcion)"/>
+				</div>
+				@* Fecha *@
+				<div class="col-3 ms-5">
+					<label class="form-label"><strong>Fecha</strong></label>
+					<InputDate class="form-control" @bind-Value="tickets.Fecha"></InputDate>
+					<ValidationMessage For="(()=> tickets.Fecha)" />
+				</div>
+				@* Tiempo Invertido *@
+				<div class="col-3 ms-5">
+					<label class="form-label"><strong>Tiempo Invertido</strong></label>
+					<InputText class="form-control" @bind-Value="tickets.TiempoInvertido"></InputText>
+					<ValidationMessage For="(()=> tickets.TiempoInvertido)" />
+				</div>
+				@* Prioridad *@
+				<div class="col-3 ms-5">
+					<label class="form-label"><strong>Prioridad</strong></label>
+					<InputText class="form-control" @bind-Value="tickets.Prioridad"></InputText>
+					<ValidationMessage For="(()=> tickets.Prioridad)" />
+				</div>
+				@* Cliente *@
+				<div class="col-3 ms-5">
+					<label class="form-label"><strong>Cliente</strong></label>
+					<InputSelect class="form-control" @bind-Value="tickets.ClienteId">
+						<option value="0">Seleccione el cliente</option>
+						@foreach (var cliente in clientes)
+						{
+							<option value="@cliente.ClienteId">@cliente.Nombres</option>
+						}
+					</InputSelect>
+					<ValidationMessage For="(()=> tickets.ClienteId)" />
+				</div>
+				@* Tecnico *@
+				<div class="col-3 ms-5">
+					<label class="form-label"><strong>Tecnico</strong></label>
+					<InputSelect class="form-control" @bind-Value="tickets.TecnicoId">
+						<option value="0">Seleccione al tecnico</option>
+						@foreach (var tecnico in tecnicos)
+						{
+							<option value="@tecnico.TecnicoId">@tecnico.Nombres</option>
+						}
+					</InputSelect>
+					<ValidationMessage For="(()=> tickets.TecnicoId)" />
+				</div>
+			</div>
+		</div>
+		@*Footer*@
+		<div class="card-footer text-center">
+			<a href="/Ticket/Index" class="bi bi-arrow-return-left btn btn-outline-primary">Volver</a>
+			<button type="submit" class="btn btn-outline-success bi bi-floppy">Guardar</button>
+		</div>
+	</div>
+</EditForm>
+
+@code {
+	public Tickets tickets { get; set; } = new Tickets();
+	public List<Clientes> clientes { get; set; } = new List<Clientes>();
+	public List<Tecnicos> tecnicos { get; set; } = new List<Tecnicos>();
+	public string? Alerta { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		clientes = await clientesService.Listar(o => o.ClienteId > 0);
+		tecnicos = await tecnicosService.Listar(o => o.TecnicoId > 0);
+	}
+
+	public async Task Guardar()
+	{
+		var guardar = await ticketsService.Guardar(tickets);
+		navigation.NavigateTo("/Ticket/Index");
+		return;
+	}
+}
