@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Registro.Services;
 
-public class ClienteService(IDbContextFactory<Contexto> DbFactory)
+public class ClientesService(IDbContextFactory<Contexto> DbFactory)
 {
 	public async Task<bool> Guardar(Clientes cliente)
 	{
@@ -66,5 +66,4 @@ public class ClienteService(IDbContextFactory<Contexto> DbFactory)
 		return await contexto.Clientes
 			.AnyAsync(t => t.Nombres.ToLower().Equals(nombre.ToLower()) && t.ClienteId != id || t.Rnc.Equals(rnc) && t.ClienteId != id);
 	}
-
 }

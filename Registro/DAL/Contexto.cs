@@ -10,5 +10,7 @@ namespace Registro.DAL
 		public DbSet<Tecnicos> Tecnicos { get; set; }
 
 		public DbSet<Clientes> Clientes { get; set; }
+
+		public DbSet<Ciudades> Ciudades { get; set; }
 	}
 }

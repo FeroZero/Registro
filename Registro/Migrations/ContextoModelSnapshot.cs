@@ -22,6 +22,23 @@ namespace Registro.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Registro.Models.Ciudades", b =>
+                {
+                    b.Property<int>("CiudadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CiudadId"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CiudadId");
+
+                    b.ToTable("Ciudades");
+                });
+
             modelBuilder.Entity("Registro.Models.Clientes", b =>
                 {
                     b.Property<int>("ClienteId")
@@ -29,6 +46,12 @@ namespace Registro.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteId"));
+
+                    b.Property<int>("CiudadId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CiudadesCiudadId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
@@ -53,6 +76,8 @@ namespace Registro.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ClienteId");
+
+                    b.HasIndex("CiudadesCiudadId");
 
                     b.HasIndex("TecnicoId");
 
@@ -81,11 +106,17 @@ namespace Registro.Migrations
 
             modelBuilder.Entity("Registro.Models.Clientes", b =>
                 {
+                    b.HasOne("Registro.Models.Ciudades", "Ciudades")
+                        .WithMany()
+                        .HasForeignKey("CiudadesCiudadId");
+
                     b.HasOne("Registro.Models.Tecnicos", "Tecnicos")
                         .WithMany()
                         .HasForeignKey("TecnicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ciudades");
 
                     b.Navigation("Tecnicos");
                 });

@@ -1,13 +1,13 @@
-﻿@page "/Tecnico/Index"
-@inject TecnicosService tecnicosService
+﻿@page "/Ciudad/Index"
+@inject CiudadesService ciudadService
 @rendermode InteractiveServer
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Cliente Index</PageTitle>
 <div class="container">
 	<div class="card shadow-lg">
 		@*header*@
 		<div class="card-header">
-			<div class="card-title"><h5>Registro de T&eacute;cnicos</h5></div>
+			<div class="card-title"><h5>Registro de Ciudades</h5></div>
 		</div>
 		@*body*@
 		<div class="card-body">
@@ -28,8 +28,7 @@
 					<InputSelect class="form-select" @bind-Value="Filtro">
 						<option value="" selected disabled>Elija una opci&oacute;n</option>
 						<option value="Id">Id</option>
-						<option value="Nombre">Nombre</option>
-						<option value="SueldoHora">SueldoHora</option>
+						<option value="Nombre">ciudad</option>
 					</InputSelect>
 				</div>
 				@*Buscar*@
@@ -45,7 +44,7 @@
 				</div>
 				@*Crear*@
 				<div class="col text-end">
-					<a href="/Tecnico/Crear" class="bi bi-plus-square btn btn-outline-primary">Crear</a>
+					<a href="/Ciudad/Crear" class="bi bi-plus-square btn btn-outline-primary">Crear</a>
 				</div>
 			</div>
 		</div>
@@ -53,20 +52,18 @@
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Nombres</th>
-					<th>Sueldo por Hora</th>
+					<th>Ciudad</th>
 				</tr>
 			</thead>
 
 			<tbody>
-				@foreach (var tecnicos in ListaTecnicos)
+				@foreach (var ciudad in ListaCiudad)
 				{
 					<tr>
-						<td>@tecnicos.TecnicoId</td>
-						<td>@tecnicos.Nombres</td>
-						<td>$ @tecnicos.SueldoHora.ToString("N2")</td>
-						<td><a href="/Tecnico/Editar/@tecnicos.TecnicoId" class="bi bi-pencil-square btn btn-outline-warning"></a></td>
-						<td><a href="/Tecnico/Eliminar/@tecnicos.TecnicoId" class="bi bi-trash btn btn-outline-danger"></a></td>
+						<td>@ciudad.CiudadId</td>
+						<td>@ciudad.Nombre</td>
+						<td><a href="/Ciudad/Editar/@ciudad.CiudadId" class="bi bi-pencil-square btn btn-outline-warning"></a></td>
+						<td><a href="/Ciudad/Eliminar/@ciudad.CiudadId" class="bi bi-trash btn btn-outline-danger"></a></td>
 					</tr>
 				}
 			</tbody>
@@ -75,13 +72,13 @@
 </div>
 
 @code {
-	public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
+	public List<Ciudades> ListaCiudad { get; set; } = new List<Ciudades>();
 	public string Filtro { get; set; } = string.Empty;
 	public string ValorFiltro { get; set; } = string.Empty;
 
 	protected override async Task OnInitializedAsync()
 	{
-		ListaTecnicos = await tecnicosService.Listar(o => o.TecnicoId > 0);
+		ListaCiudad = await ciudadService.Listar(o => o.CiudadId > 0);
 	}
 
 	private async Task Buscar()
@@ -89,18 +86,18 @@
 		if (ValorFiltro.Trim() != "")
 		{
 			if (Filtro == "Id" && int.TryParse(ValorFiltro, out int tecnicoId))
-				ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId == tecnicoId);
+				ListaCiudad = await ciudadService.Listar(t => t.CiudadId == tecnicoId);
 			else if (Filtro == "Nombre")
-				ListaTecnicos = await tecnicosService.Listar(t => t.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+				ListaCiudad = await ciudadService.Listar(t => t.Nombre.ToLower().Contains(ValorFiltro.ToLower()));
 
 		}
 		else
-			ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId > 0);
+			ListaCiudad = await ciudadService.Listar(t => t.CiudadId > 0);
 	}
 
 	private async Task Restablecer()
 	{
-		ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId > 0);
+		ListaCiudad = await ciudadService.Listar(t => t.CiudadId > 0);
 		Filtro = string.Empty;
 		ValorFiltro = string.Empty;
 	}

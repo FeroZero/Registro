@@ -1,0 +1,60 @@
+﻿@page "/Ciudad/Crear"
+@inject CiudadesService ciudadService
+@inject NavigationManager navigate
+@rendermode InteractiveServer
+
+<PageTitle>Crear</PageTitle>
+<EditForm Model="ciudad" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<div class="container">
+		<div class="card shadow-lg">
+			@*header*@
+			<div class="card-header">
+				<div class="card-title">Crear Ciudad</div>
+			</div>
+			@*body*@
+			<div class="card-body">
+				<div class="row">
+					<div class="col-3 ms-5">
+						@*Nombres*@
+						<label class="form-label"><strong>Ciudad</strong></label>
+						<InputText class="form-control" @bind-value="ciudad.Nombre"></InputText>
+						<ValidationMessage For="(()=> ciudad.Nombre)" />
+					</div>
+				</div>
+			</div>
+			<div class="col-3 ms-5">
+				<h6>@Alerta</h6>
+			</div>
+			@*footer*@
+			<div class="card-footer text-center">
+				<a href="/Ciudad/Index" class="bi bi-arrow-return-left btn btn-outline-primary">Volver</a>
+				<button type="submit" class="bi bi-floppy btn btn-outline-success">Guardar</button>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+
+@code {
+	public Ciudades ciudad { get; set; } = new Ciudades();
+	public string Alerta { get; set; }
+
+
+	public async Task Guardar()
+	{
+		if (await Existe())
+		{
+			Alerta = "Ya existe esta ciudad.";
+			return;
+		}
+		var guardar = await ciudadService.Guardar(ciudad);
+		navigate.NavigateTo("/Ciudad/Index");
+	}
+
+	public async Task<bool> Existe()
+	{
+		var existe = await ciudadService.ExisteCiudad(ciudad.Nombre, ciudad.CiudadId);
+		return existe;
+	}
+}

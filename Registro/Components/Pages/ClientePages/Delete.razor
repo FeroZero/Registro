@@ -1,6 +1,6 @@
 ﻿@page "/Cliente/Eliminar/{ClienteId:int}"
-@inject ClienteService clienteService
-@inject TecnicoService tecnicoService
+@inject ClientesService clienteService
+@inject TecnicosService tecnicoService
 @inject NavigationManager navigate
 @rendermode InteractiveServer
 
@@ -9,11 +9,11 @@
 	<div class="shadow-lg">
 		@*header*@
 		<div class="card-header">
-			<div class="card-title"><h5>Estas Seguro que quieres eliminar el Cliente @clientes.Nombres?</h5></div>
+			<div class="card-title"><h5>Estás seguro de que quieres eliminar al cliente @clientes.Nombres?</h5></div>
 		</div>
 		@*body*@
 		<div class="card-body">
-			<a href="/Tecnico/Index" class="btn btn-outline-primary">Volver</a>
+			<a href="/Cliente/Index" class="btn btn-outline-primary">Volver</a>
 			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
 		</div>
 	</div>

@@ -32,5 +32,11 @@ namespace Registro.Models
 		[ForeignKey("Tecnicos")]
 		public int TecnicoId { get; set; }
 		public Tecnicos? Tecnicos { get; set; }
+
+		[ForeignKey("CiudadesId")]
+
+		public int CiudadId { get; set; }
+
+		public Ciudades? Ciudades { get; set; }
 	}
 }
