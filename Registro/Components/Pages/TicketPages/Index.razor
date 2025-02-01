@@ -5,14 +5,16 @@
 
 <PageTitle>Tickets Index</PageTitle>
 <div class="container">
-	<div class="card-header">
-		@*header*@
-		<div class="card-title"><h5>Registro de Tickets</h5></div>
-	</div>
-	<div class="card-body">
-		@*body*@
-		<div class="col text-end">
-			<a href="/Ticket/Crear" class="btn btn-outline-primary bi bi-plus-square">Crear</a>
+	<div class="card shadow-lg">
+		<div class="card-header">
+			@*header*@
+			<div class="card-title"><h5>Registro de Tickets</h5></div>
+		</div>
+		<div class="card-body">
+			@*body*@
+				<div class="col text-end">
+					<a href="/Ticket/Crear" class="btn btn-outline-primary bi bi-plus-square">Crear</a>
+				</div>
 		</div>
 		<table class="table table-borderer">
 			<thead>
@@ -28,7 +30,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach(var tickets in Listatickets)
+				@foreach (var tickets in Listatickets)
 				{
 					<tr>
 						<td>@tickets.TicketId</td>
