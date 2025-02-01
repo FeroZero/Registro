@@ -69,16 +69,16 @@
 
 						<div class="col-3 ms-5">
 							@*Tecnico*@
-							<label class="form-label text-naranja"><strong>Tipo</strong></label>
+							<label class="form-label text-naranja"><strong>Tecnico</strong></label>
 							<InputSelect class="form-select" @bind-Value="cliente.TecnicoId">
 								<option value="0">Seleccione un Tecnico.</option>
 								@foreach (var tecnicos in ListaTecnicos)
-							{
-								<option value="@tecnicos.TecnicoId">@tecnicos.Nombres</option>
-							}
-						</InputSelect>
-						<ValidationMessage For="(()=> cliente.TecnicoId)"></ValidationMessage>
-					</div>
+								{
+									<option value="@tecnicos.TecnicoId">@tecnicos.Nombres</option>
+								}
+							</InputSelect>
+							<ValidationMessage For="(()=> cliente.TecnicoId)"></ValidationMessage>
+						</div>
 
 				</div>
 			</div>
