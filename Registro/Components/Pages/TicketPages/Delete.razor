@@ -1,0 +1,40 @@
+﻿@page "/Ticket/Eliminar/{TicketId:int}"
+@inject ClientesService clienteService
+@inject TicketsService ticketsService
+@inject TecnicosService tecnicoService
+@inject NavigationManager navigate
+@rendermode InteractiveServer
+
+<PageTitle>Eliminar</PageTitle>
+<div class="container">
+	<div class="shadow-lg">
+		@*header*@
+		<div class="card-header">
+			<div class="card-title"><h5>Estás seguro de que quieres eliminar este ticket con Asunto a "@tickets.Asunto"?</h5></div>
+		</div>
+		@*body*@
+		<div class="card-body">
+			<a href="/Ticket/Index" class="btn btn-outline-primary">Volver</a>
+			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int TicketId { get; set; }
+	public Tickets tickets { get; set; } = new Tickets();
+	public Tecnicos tecnicos { get; set; } = new Tecnicos();
+	public Clientes clientes { get; set; } = new Clientes();
+
+	public async Task Eliminar()
+	{
+		var eliminar = await ticketsService.Eliminar(TicketId);
+		navigate.NavigateTo("/Ticket/Index");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		tickets = await ticketsService.Buscar(TicketId);
+	}
+}
