@@ -29,6 +29,8 @@ namespace Registro
 
             builder.Services.AddScoped<TicketsService>();
 
+            builder.Services.AddScoped<SistemasService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
