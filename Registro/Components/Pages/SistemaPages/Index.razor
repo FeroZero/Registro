@@ -1,0 +1,106 @@
+﻿@page "/Sistema/Index"
+@inject SistemasService sistemaService
+@rendermode InteractiveServer
+
+<PageTitle>Sistema Index</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*header*@
+		<div class="card-header">
+			<div class="card-title"><h5>Registro de Sistemas</h5></div>
+		</div>
+		@*body*@
+		<div class="card-body">
+			<div class="row">
+				@*Filtrar por*@
+				<div class="col-3">
+					<label class="form-label"><strong>Filtrar Por</strong></label>
+				</div>
+				@*ValorFiltro*@
+				<div class="col-4">
+					<label class="form-label"><strong>Busqueda</strong></label>
+				</div>
+			</div>
+			@*Inputs y Botones*@
+			<div class="row">
+				@*Filtro*@
+				<div class="col-3">
+					<InputSelect class="form-select" @bind-Value="Filtro">
+						<option value="" selected disabled>Elija una opci&oacute;n</option>
+						<option value="Id">Id</option>
+						<option value="Sistema">sistema</option>
+					</InputSelect>
+				</div>
+				@*Buscar*@
+				<div class="col-4">
+					<div class="input-group">
+						<input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+						<button type="button" class="bi bi-search btn btn-outline-primary" @onclick="Buscar">Buscar</button>
+					</div>
+				</div>
+				@*Restablecer*@
+				<div class="col-auto">
+					<button type="button" class="bi bi-arrow-counterclockwise btn btn-outline-secondary" @onclick="Restablecer">Nuevo</button>
+				</div>
+				@*Crear*@
+				<div class="col text-end">
+					<a href="/Sistema/Crear" class="bi bi-plus-square btn btn-outline-primary">Crear</a>
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Sistema</th>
+					<th>Complejidad</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var ciudad in ListaSistemas)
+				{
+					<tr>
+						<td>@ciudad.SistemaId</td>
+						<td>@ciudad.Descripcion</td>
+						<td>%@ciudad.Complejidad.ToString("N2")</td>
+						<td><a href="/Sistema/Editar/@ciudad.SistemaId" class="bi bi-pencil-square btn btn-outline-warning"></a></td>
+						<td><a href="/Sistema/Eliminar/@ciudad.SistemaId" class="bi bi-trash btn btn-outline-danger"></a></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+@code {
+	public List<Sistemas> ListaSistemas { get; set; } = new List<Sistemas>();
+	public string Filtro { get; set; } = string.Empty;
+	public string ValorFiltro { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		ListaSistemas = await sistemaService.Listar(o => o.SistemaId > 0);
+	}
+
+	private async Task Buscar()
+	{
+		if (ValorFiltro.Trim() != "")
+		{
+			if (Filtro == "Id" && int.TryParse(ValorFiltro, out int tecnicoId))
+				ListaSistemas = await sistemaService.Listar(t => t.SistemaId == tecnicoId);
+			else if (Filtro == "Nombre")
+				ListaSistemas = await sistemaService.Listar(t => t.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
+
+		}
+		else
+			ListaSistemas = await sistemaService.Listar(t => t.SistemaId > 0);
+	}
+
+	private async Task Restablecer()
+	{
+		ListaSistemas = await sistemaService.Listar(t => t.SistemaId > 0);
+		Filtro = string.Empty;
+		ValorFiltro = string.Empty;
+	}
+}

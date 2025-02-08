@@ -1,0 +1,63 @@
+﻿@page "/Sistema/Editar/{SistemaId:int}"
+@inject SistemasService sistemaService
+@inject NavigationManager navigate
+@rendermode InteractiveServer
+
+<PageTitle>Sistema Editar</PageTitle>
+<EditForm Model="sistema" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<div class="container">
+		<div class="card shadow-lg">
+			@*header*@
+			<div class="card-header">
+				<div class="card-title">Editar Sistema</div>
+			</div>
+			@*body*@
+			<div class="card-body">
+				<div class="row">
+					<div class="col-3 ms-5">
+						@*Nombres*@
+						<label class="form-label"><strong>Sistema</strong></label>
+						<InputText class="form-control" @bind-value="sistema.Descripcion"></InputText>
+						<ValidationMessage For="(()=> sistema.Descripcion)" />
+					</div>
+					<div class="col-3 ms-5">
+						@*SueldoHora*@
+						<label class="form-label"><strong>Complejidad</strong></label>
+						<InputNumber class="form-control" @bind-Value="sistema.Complejidad"></InputNumber>
+						<ValidationMessage For="(()=> sistema.Complejidad)" />
+					</div>
+				</div>
+			</div>
+			<div class="col-3 ms-5">
+				<h6>@Alerta</h6>
+			</div>
+			@*footer*@
+			<div class="card-footer text-center">
+				<a href="/Sistema/Index" class="bi bi-arrow-return-left btn btn-outline-primary">Volver</a>
+				<button type="submit" class="bi bi-floppy btn btn-outline-success">Guardar</button>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+
+@code {
+	[Parameter]
+	public int SistemaId { get; set; }
+	public Sistemas sistema { get; set; } = new Sistemas();
+	public string Alerta { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		sistema = await sistemaService.Buscar(SistemaId);
+	}
+
+	public async Task Guardar()
+	{
+		var guardar = await sistemaService.Guardar(sistema);
+		navigate.NavigateTo("/Sistema/Index");
+		return;
+		
+	}
+}
